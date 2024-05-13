@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "account")
-public class Account {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id", columnDefinition = "int UNSIGNED not null")
@@ -20,12 +20,12 @@ public class Account {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_type")
-    private AccountType accountType;
+    private UserType type;
 
-    @Column(name = "account_name", nullable = false, length = 50)
-    private String accountName;
+    @Column(name = "account_name", nullable = false, length = 32)
+    private String name;
 
-    @Column(name = "password", nullable = false, length = 50)
+    @Column(name = "password", nullable = false, length = 256)
     private String password;
 
 }

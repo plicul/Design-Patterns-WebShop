@@ -16,7 +16,7 @@ import java.util.Set;
 @Table(name = "account_type")
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountType {
+public class UserType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_type_id", columnDefinition = "int UNSIGNED not null")
@@ -28,7 +28,7 @@ public class AccountType {
     @Column(name = "creation_date", nullable = false)
     private LocalDate creationDate;
 
-    @OneToMany(mappedBy = "accountType")
-    private Set<Account> accounts = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "type")
+    private Set<User> users = new LinkedHashSet<>();
 
 }

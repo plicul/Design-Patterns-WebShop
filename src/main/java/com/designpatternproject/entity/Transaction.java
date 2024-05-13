@@ -24,7 +24,7 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    private User user;
 
     @Column(name = "transaction_date", nullable = false)
     private LocalDate transactionDate;

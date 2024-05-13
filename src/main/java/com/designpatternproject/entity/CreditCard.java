@@ -24,7 +24,7 @@ public class CreditCard {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    private User user;
 
     @Column(name = "credit_card_number", nullable = false, length = 16)
     private String creditCardNumber;

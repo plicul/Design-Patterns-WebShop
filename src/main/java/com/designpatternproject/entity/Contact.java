@@ -22,7 +22,7 @@ public class Contact {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    private User user;
 
     @Column(name = "phone_number", length = 50)
     private String phoneNumber;
