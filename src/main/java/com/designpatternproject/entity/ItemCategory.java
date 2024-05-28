@@ -1,6 +1,7 @@
 package com.designpatternproject.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,16 +15,23 @@ import java.util.Set;
 public class ItemCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_category_id", columnDefinition = "int UNSIGNED not null")
+    @Column(name = "id", columnDefinition = "int UNSIGNED not null")
     private Long id;
 
-    @Column(name = "item_category", nullable = false, length = 50)
-    private String itemCategory;
+    @Column(name = "category", nullable = false, length = 50)
+    private String category;
 
     @OneToMany(mappedBy = "itemCategory")
     private Set<Item> items = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "category")
     private Set<ItemSubcategory> itemSubcategories = new LinkedHashSet<>();
+
+    @NotNull
+    @Column(name = "level", nullable = false)
+    private Integer level;
+
+    @Column(name = "parent")
+    private Long parent;
 
 }

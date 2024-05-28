@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("auth")
 public class AuthController {
 
     private AuthService authService;
@@ -18,11 +18,24 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto){
         String token = authService.login(loginDto);
+        if(token == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
 
         JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
         jwtAuthResponse.setAccessToken(token);
 
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<Boolean> register(@RequestBody LoginDto loginDto){
+        try {
+            authService.register(loginDto);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(false, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
 }
