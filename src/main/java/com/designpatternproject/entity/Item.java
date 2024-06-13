@@ -1,6 +1,7 @@
 package com.designpatternproject.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,10 +33,6 @@ public class Item {
     @JoinColumn(name = "item_category_id", nullable = false)
     private ItemCategory itemCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_subcategory_id")
-    private ItemSubcategory itemSubcategory;
-
     @Column(name = "creation_date", nullable = false)
     private LocalDate creationDate;
 
@@ -44,5 +41,8 @@ public class Item {
 
     @OneToMany(mappedBy = "item")
     private Set<TransactionItem> transactionItems = new LinkedHashSet<>();
+
+    @Column(name = "image_path")
+    private String imagePath;
 
 }

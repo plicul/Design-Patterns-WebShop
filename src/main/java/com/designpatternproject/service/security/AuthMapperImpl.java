@@ -8,17 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthMapperImpl implements AuthMapper {
-    /*@Override
-    public MenuItemDto toDto(MenuItem menuItem) {
-        if (menuItem == null) {
-            return null;
-        }
-        MenuItemDto menuItemDto = new MenuItemDto(
-                menuItem.getName(),
-                menuItem.getRoutePath()
-        );
-        return menuItemDto;
-    }*/
 
     @Override
     public User loginDtotoEntity(LoginDto loginDto) {

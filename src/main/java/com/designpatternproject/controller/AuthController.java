@@ -23,9 +23,11 @@ public class AuthController {
 
         JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
         jwtAuthResponse.setAccessToken(token);
+        jwtAuthResponse.setUserName(loginDto.getUsername());
 
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
+
     @PostMapping("/register")
     public ResponseEntity<Boolean> register(@RequestBody LoginDto loginDto){
         try {

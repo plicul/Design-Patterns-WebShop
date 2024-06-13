@@ -7,14 +7,13 @@ import com.designpatternproject.entity.ItemCategory;
 import com.designpatternproject.repository.ItemCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
+@Component
 public class ItemCategoryServiceImpl implements ItemCategoryService {
 
     @Autowired
@@ -26,6 +25,27 @@ public class ItemCategoryServiceImpl implements ItemCategoryService {
         return buildCategoryTree(categories);
     }
 
+    @Override
+    public List<ItemCategory> getAllSubCategories(List<String> categories) {
+        Set<ItemCategory> subCategories = new HashSet<>();
+        List<ItemCategory> itemCategories = itemCategoryRepository.findByCategoryIn(categories);
+
+        for (ItemCategory category : itemCategories) {
+            getSubCategoriesRecursive(category, subCategories);
+        }
+
+        return new ArrayList<>(subCategories);
+    }
+
+    private void getSubCategoriesRecursive(ItemCategory category, Set<ItemCategory> subCategoryNames) {
+        List<ItemCategory> subCategories = itemCategoryRepository.findByParent(category.getId());
+
+        for (ItemCategory subCategory : subCategories) {
+            if (subCategoryNames.add(subCategory)) {
+                getSubCategoriesRecursive(subCategory, subCategoryNames);
+            }
+        }
+    }
     private List<CategoryComponentDto> buildCategoryTree(List<ItemCategory> categories) {
         Map<Long, CategoryComponentDto> categoryMap = new HashMap<>();
         List<CategoryComponentDto> roots = new ArrayList<>();
@@ -60,47 +80,5 @@ public class ItemCategoryServiceImpl implements ItemCategoryService {
     private boolean hasChildren(ItemCategory category, List<ItemCategory> categories) {
         return categories.stream().anyMatch(c -> c.getParent() != null && c.getParent().equals(category.getId()));
     }
-    /*@Cacheable(cacheNames = "categoryTree", cacheManager = "defaultCacheManager")
-    public List<CategoryDto> getCategoryTree() {
-        List<ItemCategory> categories = itemCategoryRepository.findAll();
-        return buildCategoryTree(categories);
-    }
-    @CacheEvict(value = "categoryTree", allEntries = true)
-    @Scheduled(fixedRateString = "${caching.spring.TTL}")
-    public void emptyCategoryTreeCache(){
-        Logger.getInstance().log(LogLevel.INFO,"Category Tree Emptied!", "");
-    }
 
-    private List<CategoryDto> buildCategoryTree(List<ItemCategory> categories) {
-        Map<Long, CategoryDto> categoryMap = new HashMap<>();
-        List<CategoryDto> roots = new ArrayList<>();
-
-        // Create DTOs and populate the map
-        for (ItemCategory category : categories) {
-            CategoryDto dto = new CategoryDto(
-                    category.getId(),
-                    category.getCategory(),
-                    category.getLevel(),
-                    category.getParent()
-            );
-            categoryMap.put(dto.getId(), dto);
-
-            if (category.getParent() == null) {
-                roots.add(dto);
-            }
-        }
-
-        // Build the tree structure
-        for (ItemCategory category : categories) {
-            if (category.getParent() != null) {
-                CategoryDto parentDto = categoryMap.get(Long.valueOf(category.getParent()));
-                CategoryDto childDto = categoryMap.get(category.getId());
-                parentDto.getSubcategories().add(childDto);
-            }
-        }
-
-        return roots;
-    }
-
-     */
 }

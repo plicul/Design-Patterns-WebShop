@@ -24,9 +24,6 @@ public class ItemCategory {
     @OneToMany(mappedBy = "itemCategory")
     private Set<Item> items = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "category")
-    private Set<ItemSubcategory> itemSubcategories = new LinkedHashSet<>();
-
     @NotNull
     @Column(name = "level", nullable = false)
     private Integer level;
