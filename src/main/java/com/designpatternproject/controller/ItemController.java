@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -20,12 +21,12 @@ public class ItemController {
     private final ItemServiceImpl itemService;
 
     @GetMapping("/")
-    public ResponseEntity<?> getItem(@RequestParam(required = false) Long itemId, @RequestParam(required = false) List<String> categories){
+    public ResponseEntity<?> getItem(@RequestParam(required = false) Long itemId, @RequestParam(required = false) String categories){
         try {
             if(itemId != null)
                 return new ResponseEntity<>(itemService.getItemDto(itemId), HttpStatus.OK);
             if(categories != null)
-                return new ResponseEntity<>(itemService.getItemsForCategories(categories),HttpStatus.OK);
+                return new ResponseEntity<>(itemService.getItemsForCategories(Arrays.stream(categories.split("_")).toList()),HttpStatus.OK);
             return new ResponseEntity<>(itemService.getAllItems(),HttpStatus.OK);
 
         } catch (Exception e) {

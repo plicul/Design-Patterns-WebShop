@@ -37,10 +37,12 @@ public class ItemServiceImpl implements ItemService{
         try {
             //get all subcategories
             List<ItemCategory> allCategories = itemcategoryService.getAllSubCategories(categories);
-            return itemRepository.findByItemCategoryIn(allCategories).stream().map(item -> {
+            //List<Item> items = itemRepository.findByItemCategoryIn(allCategories.stream().map(ItemCategory::getId).toList());
+            List<ItemDto> itemDtos = itemRepository.findByItemCategoryIn(allCategories).stream().map(item -> {
                 ItemMapper itemMapper = itemMapperFactory.getMapper(item);
                 return itemMapper.toDto(item);
             }).toList();
+            return itemDtos;
         }
         catch (Exception e){
             return null;

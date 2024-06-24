@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService{
 
         user = userRepository.saveAndFlush(user);
 
-        //custom logika za provjeru je li sifra mjenjana
+        //logika za provjeru je li sifra mjenjana
         //ako je onda se izraduje hash i to sprema tu
         //ako nije mjenjana biti ce null polje
         //user.setPassword(userDto.getPassword());

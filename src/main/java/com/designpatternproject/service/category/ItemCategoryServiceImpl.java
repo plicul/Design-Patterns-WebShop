@@ -27,8 +27,8 @@ public class ItemCategoryServiceImpl implements ItemCategoryService {
 
     @Override
     public List<ItemCategory> getAllSubCategories(List<String> categories) {
-        Set<ItemCategory> subCategories = new HashSet<>();
         List<ItemCategory> itemCategories = itemCategoryRepository.findByCategoryIn(categories);
+        Set<ItemCategory> subCategories = new HashSet<>(itemCategories);
 
         for (ItemCategory category : itemCategories) {
             getSubCategoriesRecursive(category, subCategories);
@@ -65,14 +65,27 @@ public class ItemCategoryServiceImpl implements ItemCategoryService {
             }
         }
 
-        // Build the tree structure
         for (ItemCategory category : categories) {
             if (category.getParent() != null) {
-                CategoryCompositeDto parentDto = (CategoryCompositeDto) categoryMap.get(category.getParent());
+                Long parentId = category.getParent();
+                CategoryComponentDto parentDto = categoryMap.get(parentId);
                 CategoryComponentDto childDto = categoryMap.get(category.getId());
-                parentDto.getSubcategories().add(childDto);
+
+                if (parentDto instanceof CategoryCompositeDto) {
+                    ((CategoryCompositeDto) parentDto).getSubcategories().add(childDto);
+                } else {
+                    CategoryCompositeDto compositeParentDto = new CategoryCompositeDto(
+                            parentDto.getId(), parentDto.getCategory(), parentDto.getLevel(), parentDto.getParent());
+                    compositeParentDto.getSubcategories().add(childDto);
+                    categoryMap.put(compositeParentDto.getId(), compositeParentDto);
+                    if (roots.contains(parentDto)) {
+                        roots.remove(parentDto);
+                        roots.add(compositeParentDto);
+                    }
+                }
             }
         }
+
 
         return roots;
     }
