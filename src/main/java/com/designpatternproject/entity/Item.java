@@ -1,13 +1,13 @@
 package com.designpatternproject.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -34,7 +34,7 @@ public class Item {
     private ItemCategory itemCategory;
 
     @Column(name = "creation_date", nullable = false)
-    private LocalDate creationDate;
+    private Date creationDate;
 
     @OneToMany(mappedBy = "item")
     private Set<Price> prices = new LinkedHashSet<>();
@@ -44,5 +44,8 @@ public class Item {
 
     @Column(name = "image_path")
     private String imagePath;
+
+    @Column(name = "quantity")
+    private Integer quantity;
 
 }

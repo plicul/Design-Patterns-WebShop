@@ -8,4 +8,6 @@ import java.util.List;
 public interface ItemCategoryService {
     public List<CategoryComponentDto> getCategoryTree();
     public List<ItemCategory> getAllSubCategories(List<String> Categories);
+
+    List<String> getAll();
 }

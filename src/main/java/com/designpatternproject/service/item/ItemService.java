@@ -1,8 +1,6 @@
 package com.designpatternproject.service.item;
 
 import com.designpatternproject.dto.item.ItemDto;
-import com.designpatternproject.entity.Item;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -12,4 +10,14 @@ public interface ItemService {
     List<ItemDto> getItemsForCategories(List<String> categories);
 
     List<ItemDto> getAllItems();
+
+    Boolean saveItems(List<ItemDto> itemDtos);
+
+    Boolean deleteItems(List<Long> itemIds);
+
+    Boolean saveNewItem(ItemDto itemDto);
+
+    boolean checkItemAvailability(Long itemId, Integer amount);
+
+    void sellItem(Long itemId, Integer amount);
 }

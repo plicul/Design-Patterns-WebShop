@@ -19,5 +19,7 @@ public class UserDto implements Serializable {
     ContactDto contact;
     String name;
     String password;
+    Float cash;
+
 
 }

@@ -17,6 +17,16 @@ public class ItemCategoryController {
 
     @Autowired
     private ItemCategoryServiceImpl itemCategoryServiceImpl;
+    @GetMapping("/")
+    public ResponseEntity<List<String>> getCategoryList() {
+        try {
+            return new ResponseEntity<>(itemCategoryServiceImpl.getAll(), HttpStatus.OK);
+
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE);
+        }
+    }
 
     @GetMapping("/tree")
     public ResponseEntity<List<CategoryComponentDto>> getCategoryTree() {

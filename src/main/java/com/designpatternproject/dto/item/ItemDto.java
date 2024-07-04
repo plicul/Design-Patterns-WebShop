@@ -18,5 +18,6 @@ public class ItemDto implements Serializable {
     String itemDescription;
     String category;
     String imagePath;
+    Integer quantity;
     List<PriceDto> prices;
 }

@@ -44,6 +44,10 @@ public class UserDtoBuilder {
         this.userDto.setAddress(address);
         return this;
     }
+    public UserDtoBuilder withCash(Float cash) {
+        this.userDto.setCash(cash);
+        return this;
+    }
 
     public UserDto build() {
         return this.userDto;

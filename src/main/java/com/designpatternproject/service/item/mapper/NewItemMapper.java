@@ -7,18 +7,19 @@ import com.designpatternproject.entity.Price;
 import com.designpatternproject.repository.ItemCategoryRepository;
 import com.designpatternproject.repository.ItemRepository;
 import com.designpatternproject.repository.PriceRepository;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.stream.Collectors;
-
 @Component
-public class DefaultItemMapper implements ItemMapper{
+public class NewItemMapper implements ItemMapper{
 
     private final ItemRepository itemRepository;
     private final ItemCategoryRepository itemCategoryRepository;
     private final PriceRepository priceRepository;
 
-    public DefaultItemMapper(ItemRepository itemRepository,
+    public NewItemMapper(ItemRepository itemRepository,
                              ItemCategoryRepository itemCategoryRepository,
                              PriceRepository priceRepository) {
         this.itemRepository = itemRepository;
@@ -27,28 +28,13 @@ public class DefaultItemMapper implements ItemMapper{
     }
 
     @Override
-    public ItemDto toDto(Item item) {
-        return new ItemDto(
-                item.getId(),
-                item.getItemTitle(),
-                item.getItemDescription(),
-                item.getItemCategory().getCategory(),
-                item.getImagePath(),
-                item.getQuantity(),
-                item.getPrices().stream().map(price -> {
-                    return new PriceDto(price.getId(),
-                            price.getPriceType().getPriceType(),
-                            price.getActiveFlag(),
-                            price.getAmount()
-                    );
-                }).toList()
-        );
+    public ItemDto toDto(Item item) throws Exception {
+        throw new Exception("invalid operation");
     }
 
-    //Only already existing items will get to here
     @Override
-    public Item toEntity(ItemDto itemDto) throws Exception {
-        Item item = itemRepository.findById(itemDto.getId()).orElseThrow();
+    public Item toEntity(ItemDto itemDto) {
+        Item item = new Item();
         item.setItemTitle(itemDto.getItemTitle());
         item.setItemDescription(itemDto.getItemDescription());
         try {
@@ -57,15 +43,17 @@ public class DefaultItemMapper implements ItemMapper{
             }
         }
         catch (Exception ignored){
+            item.setItemCategory(itemCategoryRepository.findByCategoryIgnoreCase("CATEGORY 1").orElseThrow());
         }
-
         item.setImagePath(itemDto.getImagePath());
         item.setQuantity(itemDto.getQuantity());
-        item.setPrices(itemDto.getPrices().stream().map(priceDto -> {
-            Price price = priceRepository.findById(priceDto.getId()).orElseThrow();
+        /*item.setPrices(itemDto.getPrices().stream().map(priceDto -> {
+            //construct new price obj
+            Price price = new Price();
             price.setAmount(priceDto.getAmount());
             return price;
-        }).collect(Collectors.toSet()));
+        }).collect(Collectors.toSet()));*/
+        item.setCreationDate(new Date());
         return item;
     }
 }

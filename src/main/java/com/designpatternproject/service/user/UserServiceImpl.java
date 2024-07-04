@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService{
                 //.withType(user.getType())
                 .withContact(contactDto)
                 .withAddress(addressDto)
+                .withCash(user.getCash())
                 .build();
     }
 
@@ -138,6 +139,19 @@ public class UserServiceImpl implements UserService{
             addressRepository.save(address);
         }
 
+    }
+
+    @Override
+    public boolean checkCash(String userName, Long totalPrice) {
+        User user = userRepository.findByName(userName).orElseThrow();
+        return user.getCash() >= totalPrice;
+    }
+
+    @Override
+    public void pay(String userName, Long totalPrice) {
+        User user = userRepository.findByName(userName).orElseThrow();
+        user.setCash(user.getCash() - totalPrice);
+        userRepository.save(user);
     }
 
 }

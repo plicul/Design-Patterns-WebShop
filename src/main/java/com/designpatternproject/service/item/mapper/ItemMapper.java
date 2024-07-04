@@ -4,5 +4,6 @@ import com.designpatternproject.dto.item.ItemDto;
 import com.designpatternproject.entity.Item;
 
 public interface ItemMapper {
-    ItemDto toDto(Item item);
+    ItemDto toDto(Item item) throws Exception;
+    Item toEntity(ItemDto itemDto) throws Exception;
 }

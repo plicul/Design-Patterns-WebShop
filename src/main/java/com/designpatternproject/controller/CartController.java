@@ -45,6 +45,14 @@ public class CartController {
             return new ResponseEntity<>(false, HttpStatus.NO_CONTENT);
         }
     }
-
+    @PutMapping("/checkout/{userName}")
+    public ResponseEntity<String> checkoutCart( @RequestBody CartDto cartDto, @PathVariable String userName) {
+        try {
+            return new ResponseEntity<>(cartService.checkoutCart(cartDto,userName), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.NO_CONTENT);
+        }
+    }
 
     }

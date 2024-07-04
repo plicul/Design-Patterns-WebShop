@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -33,15 +34,15 @@ public class Price {
     private String activeFlag;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private Date endDate;
 
     @Column(name = "amount", columnDefinition = "int UNSIGNED not null")
     private Long amount;
 
     @Column(name = "creation_date", nullable = false)
-    private LocalDate creationDate;
+    private Date creationDate;
 
 }

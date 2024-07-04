@@ -37,6 +37,12 @@ public class ItemCategoryServiceImpl implements ItemCategoryService {
         return new ArrayList<>(subCategories);
     }
 
+    @Override
+    public List<String> getAll() {
+        List<ItemCategory> itemCategories = itemCategoryRepository.findAll();
+        return itemCategories.stream().map(ItemCategory::getCategory).toList();
+    }
+
     private void getSubCategoriesRecursive(ItemCategory category, Set<ItemCategory> subCategoryNames) {
         List<ItemCategory> subCategories = itemCategoryRepository.findByParent(category.getId());
 

@@ -8,4 +8,6 @@ public interface CartService {
     Integer createNewCart(CartDto cartDto);
 
     Boolean updateCart(CartDto cartDto);
+
+    String checkoutCart(CartDto cartDto, String userName) throws Exception;
 }
